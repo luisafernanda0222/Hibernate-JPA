@@ -1,26 +1,32 @@
 package entidades;
 
 import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "duenos")
-public class Dueno {
+@Table(name = "veterinarios")
+public class Veterinario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_dueno;
+    private int id_veterinario;
     private String nombre;
 
-    @OneToMany(mappedBy = "dueno", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "mascotas_veterinarios",
+            joinColumns = @JoinColumn(name = "veterinario_id"),
+            inverseJoinColumns = @JoinColumn(name = "mascota_id")
+    )
     private List<Mascota> mascotas = new ArrayList<>();
 
-    public int getId_dueno() {
-        return id_dueno;
+    public int getId_veterinario() {
+        return id_veterinario;
     }
 
-    public void setId_dueno(int id_dueno) {
-        this.id_dueno = id_dueno;
+    public void setId_veterinario(int id_veterinario) {
+        this.id_veterinario = id_veterinario;
     }
 
     public String getNombre() {
@@ -39,8 +45,7 @@ public class Dueno {
         this.mascotas = mascotas;
     }
 
-    public void agregarMascota(Mascota mascota) {
-        mascotas.add(mascota);
-        mascota.setDueno(this);
+    public int getId() {
+        return id_veterinario;
     }
 }
